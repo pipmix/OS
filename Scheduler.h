@@ -3,8 +3,8 @@
 #include "Processor.h"
 
 
-
 class Scheduler {
+
 	public:
 					Scheduler				();
 					~Scheduler				();
@@ -16,15 +16,22 @@ class Scheduler {
 
 		void		GetAvailableProcessor	();
 		Process*	GetNextProcess			();
+		double		GetDelta				();
+
+		void		StartAndProcess			();
 
 	private:
 
 		vector<Processor*>	m_ProcessorList;
 		vector<Process*>	m_ProcessList;
-		int m_NumberOfProcessors = 0;
 
 		int loc = 0;
 		bool sorted = 0;
+
+		time_point<system_clock> start, end;
+
+		double timeVar;
+
 
 };
 

@@ -1,6 +1,10 @@
 #include "Scheduler.h"
 
-Scheduler::Scheduler() {}
+Scheduler::Scheduler() {
+
+	start = std::chrono::system_clock::now();
+
+}
 Scheduler::~Scheduler() {}
 
 void Scheduler::AddProcessor(Processor& p) {
@@ -51,12 +55,28 @@ bool Scheduler::IsProcessing() {
 
 	cout << "Processlist size = " << m_ProcessList.size() << endl;
 
+	GetDelta();
+
 	if (m_ProcessList.size() > 0) {
-		cout << "GetAvailable" << endl;
+		//cout << "GetAvailable" << endl;
 		GetAvailableProcessor();
 		return 1;
 	}
 	else
 		cout << "Done Getting Available" << endl;
 		return 0;
+}
+
+double Scheduler::GetDelta() {
+
+	end = system_clock::now();
+	duration<double> elapsed_seconds = end - start;
+	return elapsed_seconds.count();
+
+}
+
+void Scheduler::StartAndProcess() {
+
+
+
 }
