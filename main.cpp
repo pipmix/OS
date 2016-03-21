@@ -23,9 +23,9 @@ int main() {
 				processCount++;
 			}
 
-		//scheduler.ProcessRoundRobin(50);
+		scheduler.ProcessRoundRobin(50);
 		//scheduler.ProcessFIFO();
-		scheduler.ProcessSJF();
+		//scheduler.ProcessSJF();
 		simulatedCycles++;
 
 	}
