@@ -12,7 +12,9 @@ using namespace std;
 
 extern int simulatedCycles;
 extern int processID;
-extern int average;
+extern int waitAverage;
+extern int cycleAverage;
+extern int noCompletedProcess;
 
 
 class Process {

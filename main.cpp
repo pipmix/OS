@@ -1,10 +1,10 @@
 #include "Scheduler.h"
 
 extern int simulatedCycles = 0;
-extern int processID = 10001;
-extern int average = 0;
-
-
+extern int processID = 01;
+extern int waitAverage = 0;
+extern int cycleAverage = 0;
+extern int noCompletedProcess = 0;
 
 
 int main() {
@@ -12,10 +12,12 @@ int main() {
 	Scheduler scheduler;
 
 	int noProcesses = 50;
-	int noCompletedProcess = 0;
 	int processCount = 0;
+	int choice = 0;
+	cout << "1: Round Robin\n2: FIFO\n3: SJF\nEnter 1-3: ";
+	cin >> choice;
 
-	while (simulatedCycles < 100000000) {
+	while (noCompletedProcess < noProcesses ) {
 
 		if (processCount < noProcesses)
 			if (simulatedCycles % 50 == 0) {
@@ -24,17 +26,24 @@ int main() {
 				processCount++;
 			}
 
-		scheduler.ProcessRoundRobin(50);
-		//scheduler.ProcessFIFO();
-		//scheduler.ProcessSJF();
+		switch(choice){
+			case 1:
+				scheduler.ProcessRoundRobin(50);
+				break;
+			case 2:
+				scheduler.ProcessFIFO();
+				break;
+			case 3:
+				scheduler.ProcessSJF();
+				break;	
+		}
+
 		simulatedCycles++;
 
 	}
 
 	cout << "PID" << "\t" << "cycles" << "\t" << "wTime" << "\t" << "Times Processed On" << endl;
-
-
-	cout << "TOTAL AVERAGE: " << average/50 << endl;
+	cout << "WAIT AVERAGE: " << waitAverage/50 << "\t" << "Cycle Average: " << cycleAverage/50  << endl;
 
 	return 0;
 }

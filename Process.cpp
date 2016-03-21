@@ -8,18 +8,12 @@ Process::Process() {
 	m_WaitTime = 0;
 	m_StartTime = simulatedCycles;
 
-
-	
-
-	
-
-	// Use normal distribution with mean of 6000 and standard deviation of 5000
 	do {
-		// Since normal dist works on infinite interval will Truncrate any values the fall outside required values
 		m_Cycles = ReturnNormalDist(6000, 5000);;
 	} while (m_Cycles < 1000 || m_Cycles > 11000);
 
 	m_InitalCycles = m_Cycles;
+	cycleAverage += m_InitalCycles;
 
 	cout << "Created PID:" << m_PID << " at " << m_StartTime << " Cycles" << " with " << m_Cycles << " Cycles " << endl;
 }
@@ -41,7 +35,6 @@ bool Process::BeginProcessing() {
 	m_Cycles-- ;
 	m_StartTime = simulatedCycles++;
 
-	//if (m_Cycles == 0 )
 
 	if (m_Cycles == 0)return 1;
 	else
@@ -51,14 +44,14 @@ bool Process::BeginProcessing() {
 }
 
 void Process::CompleteProcess() {
-	//cout << "----------------------------------------" << endl;
-	//cout << "Completed PID: " << m_PID << " at " << simulatedCycles << " cylces" << " with a wait time of " << m_WaitTime << endl;
-	//cout << "Had " << m_InitalCycles << " cycles, and was processed on " << m_TimesProcessedOn << " times" << endl;
-	//cout << "----------------------------------------" << endl;
+
+	noCompletedProcess++;
 
 	cout << m_PID << "\t" << m_InitalCycles << "\t" << m_WaitTime << "\t" << m_TimesProcessedOn << endl;
 
-	average += m_WaitTime;
+	waitAverage += m_WaitTime;
+	
+
 
 }
 

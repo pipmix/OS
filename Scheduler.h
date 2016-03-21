@@ -4,7 +4,10 @@
 #include "Process.h"
 
 extern int simulatedCycles;
-extern int average;
+extern int waitAverage;
+extern int cycleAverage;
+extern int noCompletedProcess;
+
 
 class Scheduler{
 
