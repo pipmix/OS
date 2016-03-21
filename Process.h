@@ -5,6 +5,9 @@ extern int simulatedCycles;
 extern int processID;
 
 #include <iostream>
+#include <iomanip>  
+#include <random>
+#include <chrono>
 #include <deque>
 #include <vector>
 using namespace std;
@@ -20,6 +23,7 @@ public:
 	void DeltaWait();
 	void CompleteProcess();
 
+	double ReturnNormalDist(double x, double y);
 
 
 	int m_PID;

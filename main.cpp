@@ -14,7 +14,7 @@ int main() {
 	int noCompletedProcess = 0;
 	int processCount = 0;
 
-	while (simulatedCycles < 100000) {
+	while (simulatedCycles < 10000000) {
 
 		if (processCount < noProcesses)
 			if (simulatedCycles % 50 == 0) {
