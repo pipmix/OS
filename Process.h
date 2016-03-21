@@ -1,8 +1,6 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
-extern int simulatedCycles;
-extern int processID;
 
 #include <iostream>
 #include <iomanip>  
@@ -11,6 +9,10 @@ extern int processID;
 #include <deque>
 #include <vector>
 using namespace std;
+
+extern int simulatedCycles;
+extern int processID;
+extern int average;
 
 
 class Process {
