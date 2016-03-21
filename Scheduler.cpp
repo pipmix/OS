@@ -1,81 +1,134 @@
 #include "Scheduler.h"
 
-Scheduler::Scheduler() {
 
-	start = std::chrono::system_clock::now();
-
-}
-Scheduler::~Scheduler() {}
-
-void Scheduler::AddProcessor(Processor& p) {
-
-		m_ProcessorList.push_back(&p);
-		m_NumberOfProcessors++;
-		cout << "Added processor: " << m_NumberOfProcessors << endl;
-
+void Scheduler::AddedNewJob() {
+	m_newJob = true;
 }
 
-void Scheduler::AddProcess(Process& p) {
-		
-		m_ProcessList.push_back(&p);
-		cout << "Added " << p.m_PID << " cycles : " << p.m_Cycles << endl;
-}
 
-void Scheduler::GetAvailableProcessor(){
+void Scheduler::ProcessRoundRobin(int interval) {
 
-	for (int i = 0; i < m_ProcessorList.size(); i++) {
+	if (proccesses.size() == 0)return;
 
-		if (m_ProcessorList[i]->QueryProcessing()) {
+	if (m_Switching) {
+		if (m_ContextSwitch < 10)m_ContextSwitch++;
+		else
+			m_Switching = false;
 
-			Process* temp = GetNextProcess();
-			m_ProcessorList[i]->RunProcess(*temp);
+	}
+	else {
+		if (m_CycleInterval < 50) {
+
+			if (m_CycleInterval == 0)proccesses[rrIterator]->DeltaWait();
+
+			if (proccesses[rrIterator]->BeginProcessing()) {
+				// Process Completes
+				proccesses[rrIterator]->CompleteProcess();
+				proccesses.erase(proccesses.begin() + rrIterator);
+				rrIterator--;
+				m_CycleInterval = 50;
+			}
+			else m_CycleInterval++;
+
+
+		}
+		if (m_CycleInterval == 50) {
+			rrIterator++;
+			if (rrIterator == proccesses.size())rrIterator = 0;
+			m_CycleInterval = 0;
+			m_Switching = true;
 
 		}
 
+	}
+}
 
+
+void Scheduler::ProcessFIFO() {
+	
+	if (proccesses.size() == 0)return;
+
+	if (m_Switching) {
+		if (m_ContextSwitch < 10)m_ContextSwitch++;
+		else
+			m_Switching = false;
+
+	}
+	else {
+
+		if (m_CycleInterval == 0) {
+			m_Switching = true;
+			proccesses[0]->DeltaWait();
+			m_CycleInterval++;
+		}
+		else {
+
+			if (proccesses[0]->BeginProcessing()) {
+				proccesses[0]->CompleteProcess();
+				proccesses.erase(proccesses.begin());
+				m_CycleInterval = 0;
+
+			}
+		}
 	}
 
 
-}
-
-Process* Scheduler::GetNextProcess() {
-	//sorted = 1;
-	//if (sorted == 0) {
-
-		//sort(m_ProcessList.begin(), m_ProcessList.end(), [](const Process& lhs, const Process& rhs) { return lhs.m_Cycles < rhs.m_Cycles; });
-		//sorted = 1 ;
-	//}
-
-
-	return m_ProcessList[++loc];
 
 }
 
-bool Scheduler::IsProcessing() {
+void Scheduler::ProcessSJF() {
 
-	cout << "Processlist size = " << m_ProcessList.size() << endl;
+	if (proccesses.size() == 0)return;
 
-	GetDelta();
+	if (m_Switching) {
+		if (m_ContextSwitch < 10)m_ContextSwitch++;
+		else
+			m_Switching = false;
 
-	if (m_ProcessList.size() > 0) {
-		//cout << "GetAvailable" << endl;
-		GetAvailableProcessor();
-		return 1;
 	}
-	else
-		cout << "Done Getting Available" << endl;
-		return 0;
-}
+	else {
 
-double Scheduler::GetDelta() {
+		if (m_newJob == false) {
 
-	end = system_clock::now();
-	duration<double> elapsed_seconds = end - start;
-	return elapsed_seconds.count();
 
-}
+			if (m_CycleInterval == 0) {
+				m_Switching = true;
+				proccesses[m_CurrentJob]->DeltaWait();
+				m_CycleInterval++;
+			}
+			else {
 
-void Scheduler::StartAndProcess() {
+				if (proccesses[m_CurrentJob]->BeginProcessing()) {
+					proccesses[m_CurrentJob]->CompleteProcess();
+					proccesses.erase(proccesses.begin()+ m_CurrentJob);
+					m_CurrentJob = 0;
+					m_CycleInterval = 0;
+
+				}
+			}
+
+
+
+
+
+		}
+		else {
+
+			m_CurrentJob = 0;
+
+			for (int i = 0; i < proccesses.size(); i++) 
+				if (proccesses[i]->m_Cycles < proccesses[m_CurrentJob]->m_Cycles) {
+					m_CurrentJob = i;
+					m_CycleInterval = 0;
+				}
+
+			m_newJob = false;
+		}
+
+
+
+
+	}
 
 
 

@@ -1,33 +1,38 @@
-#include <iostream>
 #include "Scheduler.h"
 
+extern int simulatedCycles = 0;
+extern int processID = 10001;
 
-int main(){
 
-	int processors = 4;
-	int processes = 10;
-	int counter = 0;
+
+
+int main() {
 
 	Scheduler scheduler;
 
-	for (auto i = 0; i < processors; i++) 
-			scheduler.AddProcessor(*new Processor);
-	
+	int noProcesses = 50;
+	int noCompletedProcess = 0;
+	int processCount = 0;
 
-	scheduler.StartAndProcess();
+	while (simulatedCycles < 100000) {
 
-	if (scheduler.GetDelta() > 50 && count < processes ) {
+		if (processCount < noProcesses)
+			if (simulatedCycles % 50 == 0) {
+				scheduler.proccesses.push_back(new Process);
+				scheduler.AddedNewJob();
+				processCount++;
+			}
 
+		//scheduler.ProcessRoundRobin(50);
+		//scheduler.ProcessFIFO();
+		scheduler.ProcessSJF();
+		simulatedCycles++;
 
 	}
 
-	
 
 
-	for (int i = 0; i < numberOfProcesses; i++) {
-		Process* temp = new Process(i);
-		scheduler.AddProcess(*temp);
-	}
+
 
 
 	return 0;

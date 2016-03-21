@@ -1,38 +1,36 @@
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
-#include "Processor.h"
+
+#include "Process.h"
+
+extern int simulatedCycles;
 
 
-class Scheduler {
+class Scheduler{
 
-	public:
-					Scheduler				();
-					~Scheduler				();
-
-		void		AddProcessor			(Processor& proc);
-		void		AddProcess				(Process& proc);
-
-		bool		IsProcessing			();
-
-		void		GetAvailableProcessor	();
-		Process*	GetNextProcess			();
-		double		GetDelta				();
-
-		void		StartAndProcess			();
-
-	private:
-
-		vector<Processor*>	m_ProcessorList;
-		vector<Process*>	m_ProcessList;
-
-		int loc = 0;
-		bool sorted = 0;
-
-		time_point<system_clock> start, end;
-
-		double timeVar;
+public:
 
 
+	void ProcessRoundRobin(int interval);
+	void ProcessFIFO();
+	void ProcessSJF();
+
+	void AddedNewJob();
+
+
+	vector<Process*> proccesses;
+
+
+	int rrIterator = 0;
+
+	int m_CycleInterval = 0;
+	int m_ContextSwitch = 0;
+	bool m_Switching = 0;
+
+
+	bool m_newJob = 0;
+
+	int m_CurrentJob;
 };
 
 #endif
