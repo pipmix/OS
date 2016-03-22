@@ -21,7 +21,7 @@ void Process::DeltaWait() {
 	m_TimesProcessedOn++;
 	int delta = simulatedCycles - m_StartTime;
 	m_WaitTime += delta;
-	cout << "BEGIN: " << m_PID << "\t" << m_InitalCycles << "\t" << m_WaitTime << "\t" << "   AT:   "  << simulatedCycles << endl;
+	//cout << "BEGIN: " << m_PID << "\t" << m_InitalCycles << "\t" << m_WaitTime << "\t" << "   AT:   "  << simulatedCycles << endl;
 }
 
 bool Process::BeginProcessing() {
