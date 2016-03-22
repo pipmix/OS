@@ -41,7 +41,15 @@ public:
 	int m_StartTime;
 
 
+
+
 	int m_TimesProcessedOn = 0;
+
+	bool m_NewProcess = true;
+
+	bool m_Taken = false;
+
+	bool m_Complete = false;
 
 };
 

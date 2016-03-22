@@ -14,7 +14,7 @@ int main() {
 	int noProcesses = 50;
 	int processCount = 0;
 	int choice = 0;
-	cout << "1: Round Robin\n2: FIFO\n3: SJF\nEnter 1-3: ";
+	cout << "1: Round Robin\n2: FIFO\n3: SJF\n4. Round Robin (Multi Core)\n5. FIFO (Multi Core)\n6. SJF (Multi Core)\nEnter 1-6: ";
 	cin >> choice;
 
 	while (noCompletedProcess < noProcesses ) {
@@ -35,11 +35,19 @@ int main() {
 				break;
 			case 3:
 				scheduler.ProcessSJF();
-				break;	
+				break;
+			case 4:
+				scheduler.ProcessRoundRobin(50);
+				break;
+			case 5:
+				scheduler.ProcessFIFO_MC();
+				break;
+			case 6:
+				scheduler.ProcessSJF_MC();
+				break;
+
 		}
-
 		simulatedCycles++;
-
 	}
 
 	cout << "PID" << "\t" << "cycles" << "\t" << "wTime" << "\t" << "Times Processed On" << endl;

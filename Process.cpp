@@ -1,8 +1,6 @@
 #include "Process.h"
 
-
 Process::Process() {
-
 
 	m_PID = processID++;
 	m_WaitTime = 0;
@@ -15,53 +13,39 @@ Process::Process() {
 	m_InitalCycles = m_Cycles;
 	cycleAverage += m_InitalCycles;
 
-	cout << "Created PID:" << m_PID << " at " << m_StartTime << " Cycles" << " with " << m_Cycles << " Cycles " << endl;
+	cout << "Created PID:" << m_PID << " at " << m_StartTime << " Cycles" << " with " << m_Cycles << " Cycles.    At:  " << simulatedCycles << endl;
 }
-
-
 
 void Process::DeltaWait() {
 
 	m_TimesProcessedOn++;
-	m_WaitTime += simulatedCycles - m_StartTime;
-
-
-	
+	int delta = simulatedCycles - m_StartTime;
+	m_WaitTime += delta;
+	cout << "BEGIN: " << m_PID << "\t" << m_InitalCycles << "\t" << m_WaitTime << "\t" << "   AT:   "  << simulatedCycles << endl;
 }
-
 
 bool Process::BeginProcessing() {
 
-	m_Cycles-- ;
-	m_StartTime = simulatedCycles++;
+	m_Cycles -= 1;
+	m_StartTime = simulatedCycles;
 
-
+	
 	if (m_Cycles == 0)return 1;
 	else
 		return 0;
-
-
 }
 
 void Process::CompleteProcess() {
 
 	noCompletedProcess++;
-
-	cout << m_PID << "\t" << m_InitalCycles << "\t" << m_WaitTime << "\t" << m_TimesProcessedOn << endl;
-
+	cout << "END: " << m_PID << "\t" << m_InitalCycles << "\t" << m_WaitTime << "\t" << m_TimesProcessedOn << "   AT:   " << simulatedCycles << endl;
 	waitAverage += m_WaitTime;
-	
-
-
 }
 
 double Process::ReturnNormalDist(double x, double y){
-
-
-	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();		// Normal Distribution from program 1
 	std::default_random_engine generator(seed);
 	normal_distribution<double> distribution(x, y);
 	return distribution(generator);
-
 }
-
