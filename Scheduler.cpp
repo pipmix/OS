@@ -171,7 +171,19 @@ Process* Scheduler::GetShortestProcess() {
 	if (proccesses.size() == 0) return nullptr;
 
 
-	int temp = 0;
+	int temp = -1;
+
+	for (int i = 0; i < proccesses.size(); i++) {
+
+		if (proccesses[i]->m_Taken == true || proccesses[i]->m_Complete == true)continue;
+		else{
+			temp = i;
+			break;
+		}
+	}
+
+	if (temp == -1)return nullptr;
+	
 
 	for (int i = 0; i < proccesses.size(); i++) {
 		if (proccesses[i]->m_Cycles < proccesses[temp]->m_Cycles) {
