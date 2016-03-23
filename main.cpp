@@ -1,15 +1,17 @@
 #include "Scheduler.h"
 
-extern int simulatedCycles = 0;
-extern int processID = 01;
-extern int waitAverage = 0;
-extern int cycleAverage = 0;
-extern int noCompletedProcess = 0;
+int simulatedCycles = 0;
+int processID = 01;
+int waitAverage = 0;
+int cycleAverage = 0;
+int noCompletedProcess = 0;
 
 
 int main() {
 
 	Scheduler scheduler;
+
+
 
 	int noProcesses = 50;
 	int processCount = 0;

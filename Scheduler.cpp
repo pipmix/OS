@@ -248,8 +248,8 @@ void Scheduler::ProcessSJF_MC() {
 				if (processors[i] != nullptr) {
 					processors[i]->m_Taken = true;
 					processors[i]->DeltaWait();							//  calculate the delta wait time
-					cout << "ALLOCATE ALLOCATE: " << processors[i]->m_PID << endl;
-					//m_Switching = true;				
+					//cout << "ALLOCATE ALLOCATE: " << processors[i]->m_PID << endl;
+					m_Switching = true;				
 				}
 			}
 		}
@@ -291,10 +291,10 @@ void Scheduler::ProcessRoundRobin_MC(int interval) {
 		for (int i = 0; i < 4; i++) {
 			rrIterator = 0;
 			if (processors[i] == nullptr) {
-				if (rrIterator >= proccesses.size())processors[i] == nullptr;
-				if (proccesses[rrIterator]->m_Taken == 1)processors[i] == nullptr;
+				if (rrIterator >= proccesses.size())processors[i] = nullptr;
+				if (proccesses[rrIterator]->m_Taken == 1)processors[i] = nullptr;
 				else {
-					processors[i] == proccesses[i];
+					processors[i] = proccesses[i];
 					processors[i]->m_Taken = true;
 					m_Switching = true;
 				}
