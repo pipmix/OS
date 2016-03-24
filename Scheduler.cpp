@@ -175,7 +175,7 @@ Process* Scheduler::GetShortestProcess() {										// This returns shortest job
 	
 	for (int i = 0; i < proccesses.size(); i++) {									//Cylcle through processes
 		
-		if (proccesses[i]->m_Taken == true || proccesses[i]->m_Complete == true)continue			// this makes sure shortest process isnt taken or complete
+		if (proccesses[i]->m_Taken == true || proccesses[i]->m_Complete == true)continue;			// this makes sure shortest process isnt taken or complete
 		else{
 			temp = i;
 			break;
