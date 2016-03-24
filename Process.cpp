@@ -1,23 +1,23 @@
 #include "Process.h"
 
 Process::Process() {
-
+	// NORMAL DISTRUBTION FROM PROGRAM 2
 	m_PID = processID++;
 	m_WaitTime = 0;
 	m_StartTime = simulatedCycles;
-
+	// because normal distubution works on infinite this clamps it
 	do {
 		m_Cycles = ReturnNormalDist(6000, 5000);;
 	} while (m_Cycles < 1000 || m_Cycles > 11000);
 
 	m_InitalCycles = m_Cycles;
 	cycleAverage += m_InitalCycles;
-
+	// debug text
 	cout << "Created PID:" << m_PID << " at " << m_StartTime << " Cycles" << " with " << m_Cycles << " Cycles.    At:  " << simulatedCycles << endl;
 }
 
-void Process::DeltaWait() {
-
+void Process::DeltaWait() { 
+	//this function calculates the number of cycles between the current time (only called when process is starting to run) and the last cycle it ran or entered queue ( which isnt neccisarly the start like varible implies )
 	m_TimesProcessedOn++;
 	int delta = simulatedCycles - m_StartTime;
 	m_WaitTime += delta;
@@ -25,11 +25,11 @@ void Process::DeltaWait() {
 }
 
 bool Process::BeginProcessing() {
-
+	// This function decremets a cycle from the cycle count which is "processing" the process
 	m_Cycles -= 1;
 	m_StartTime = simulatedCycles;
 
-	
+	// Returns 0 if the process has 0 cycles therefore completed
 	if (m_Cycles == 0)return 1;
 	else
 		return 0;
