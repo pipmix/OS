@@ -13,7 +13,7 @@ struct Semaphore {
 	}
 
 	void P(){
-
+		// check until lock is 0 if so set lock to 1
 		while (test_and_set(&lock)){
 			// Loop Until Available
 		}
@@ -27,7 +27,7 @@ struct Semaphore {
 	}
 
 	void V() {
-
+		
 		while (test_and_set(&lock)){
 			// Loop Until Available
 		}
