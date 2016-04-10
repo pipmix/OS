@@ -1,0 +1,57 @@
+There are N blocks of storage ( each of which holds one unit of information)
+
+Initially, these blocks are empty and linked on freelist.
+Three processes communicate using shared memory in the following manner :
+
+Shared Variables:
+	freelist
+	list1
+	list2
+	block(where block is some data type to hold items)
+
+//remove a block from list1 and return that block    
+// multiple readers 1 writer
+Process 1 {  
+		// removes block from freelist t and stores in b
+		// produces data into b
+		// inserts b into list1
+
+	var b = *block;
+	while (1) {
+
+		b = unlink(freelist);						// b = block removed from freelist
+		produce_information_in_a_block(b);
+		link(b, list1);								// insert block b into list1
+	}
+}
+
+Process 2 {
+
+	// removes block from list1 and freelist
+	// use block x to put into y
+	// inssert block into freelist and list2
+
+	var x = *block;
+	var y = *block;
+
+	while (1) {
+		x = unlink(list1);							// x = block removed from list1
+		y = unlink(freelist);						// y = block removed from freelist
+		use_block_x_to_produce_info_in_y(x, y);
+		link(x, freelist);							// insert block x into freelist
+		link(y, list2);								// insert block y into list2 
+	}
+}
+
+Process 3{
+
+	// remove block from list2
+	// insert block into freelist
+
+	var c = *block;
+	while (1) {
+		c = unlink(list2);							// y = block removed from list2
+		consume_info_in_block(c);
+		link(c, freelist);							// insert block C into freelist
+	}
+}
