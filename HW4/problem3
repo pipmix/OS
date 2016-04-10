@@ -7,33 +7,21 @@ struct Semaphore {
 	int lock;
 
 	Semaphore(int x){
-
 		lock = 0;
-
 	}
-
 	void P(){
 		// check until lock is 0 if so set lock to 1
 		while (test_and_set(&lock)){
 			// Loop Until Available
 		}
-
-				// Do operation
-
+		// Do operation 
 		lock = 0;
-
-
-	
 	}
-
 	void V() {
-		
 		while (test_and_set(&lock)){
 			// Loop Until Available
 		}
-
 		// Do operation
-		
 		lock = 0;
 	}
 };
