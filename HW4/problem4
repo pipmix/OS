@@ -1,0 +1,57 @@
+#include <iostream>
+#include <thread>
+#include <mutex>
+
+using namespace std;
+
+int globalInt = 0;
+
+struct myStruct {
+
+	int structData;
+
+	void SetData(int x) {
+		structData = x;
+	}
+
+	int GetData() {
+		return structData;
+	}
+
+	myStruct() {
+		structData = 0;
+	}
+};
+
+myStruct MyStruct;
+mutex myMutex;
+
+
+void SetAndReturnData(myStruct mS, int x) {
+
+
+	lock_guard<mutex> guard(myMutex);
+	MyStruct.SetData(globalInt++);
+
+	cout << MyStruct.GetData() << endl;
+
+}
+
+int main() {
+
+	thread t1, t2, t3;
+
+	t1 = thread(SetAndReturnData, MyStruct, 1 );
+	t2 = thread(SetAndReturnData, MyStruct, 2 );
+	t3 = thread(SetAndReturnData, MyStruct, 3 );
+
+	t1.join();
+	t2.join();
+	t3.join();
+
+
+
+
+
+	return 0;
+}
