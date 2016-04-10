@@ -1,11 +1,12 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
+#include <chrono>
 
 using namespace std;
 
 int globalInt = 0;
-
+// This struct is the data which is considered the critical section
 struct myStruct {
 
 	int structData;
@@ -19,21 +20,56 @@ struct myStruct {
 	}
 
 	myStruct() {
-		structData = 0;
+		structData = -1;
 	}
 };
 
 myStruct MyStruct;
-mutex myMutex;
+mutex myMutex1, myMutex2;
 
 
-void SetAndReturnData(myStruct mS, int x) {
+void SetData(myStruct mS, int x) {
+	// Mutex 2 is to lock std::cout for proper cout
+	myMutex2.lock();
+	cout << "\nThread " << x << " attempting to lock CS to set data\n";
+	myMutex2.unlock();
+	// mutex 1 locks MyStrut which holds the data which is considered the critcal section
+	myMutex1.lock();
+	cout << "Thread " << x << " has locked CS to set data" << endl;
 
-
-	lock_guard<mutex> guard(myMutex);
+	// this sets the data in the CS after is aquires the lock
 	MyStruct.SetData(globalInt++);
+	cout << "Thread " << x << " has set data as " << globalInt-- << endl;
 
+	cout << "Thread " << x << " attempting to unlock CS" << endl;
 	cout << MyStruct.GetData() << endl;
+	cout << "Thread " << x << " has unlocked CS" << endl;
+	// this unlocks the lock after the data has been set
+	myMutex1.unlock();
+
+}
+
+void GetData(myStruct m, int x) {
+	// Mutex 2 is to lock std::cout for proper cout
+	myMutex2.lock();
+	cout << "\nThread " << x << " attempting to lock CS to get data\n";
+	myMutex2.unlock();
+	// this locks the CS to retreive the data 
+	myMutex1.lock();
+	cout << "Thread " << x << " has locked CS to get data" << endl;
+	// this checks to make sure there is data in the CS
+	while (MyStruct.structData == -1) {
+		cout << "DATA IS NOT SET CANNOT GET" << endl;
+		// this thread will not return data until there is data, however it does not release the lock and waits for the data to be set
+		this_thread::sleep_for(chrono::seconds(1));
+
+	}
+
+	cout << "Thread " << x << " has set data as " << MyStruct.structData << endl;
+	cout << "Thread " << x << " attempting to unlock CS" << endl;
+	// this will unlock the CS after the data has been retreived
+	myMutex1.unlock();
+	cout << "Thread " << x << " has unlocked CS" << endl;
 
 }
 
@@ -41,17 +77,13 @@ int main() {
 
 	thread t1, t2, t3;
 
-	t1 = thread(SetAndReturnData, MyStruct, 1 );
-	t2 = thread(SetAndReturnData, MyStruct, 2 );
-	t3 = thread(SetAndReturnData, MyStruct, 3 );
+	t1 = thread(GetData, MyStruct, 1);
+	t2 = thread(SetData, MyStruct, 2);
+	t3 = thread(GetData, MyStruct, 3);
 
 	t1.join();
 	t2.join();
 	t3.join();
-
-
-
-
 
 	return 0;
 }
