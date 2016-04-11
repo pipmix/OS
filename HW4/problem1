@@ -6,30 +6,42 @@ using namespace std;
 
 mutex myMutex;
 vector<int> myBucket;
+
+// This Function fills in the bucket with 15 items of data
+void ProduceFunction(){
+
+	myMutex.lock();
+	if (myBucket.size() != 0){
+		myMutex.unlock();
+		return;
+	}
+	int pData = 0;
+	for (int i = 0; i < 15; i++)
+		myBucket.push_back(pData++);
+	cout << "Producer thread locks mutex and produced 15 items of data\n" ;
+	myMutex.unlock();
+}
+
 // This function uses a mutex to prevent the concurrent threads from accessing the CS at the same time
 // The threads will hold at the mutex until the CS becomes available 
 // The mutex will unlock after the data has been accessed allowing other threads to access
 void ConsumeFunction(int threadNumber) {
 
 	myMutex.lock();
-	if (myBucket.size() == 0)return;
-	cout << "Thread " << threadNumber << " retreives data " << myBucket[myBucket.size() - 1] << endl;
+	//cout << "Consumer Thread Unlocked mutex"  << endl;
+	if (myBucket.size() == 0){
+		myMutex.unlock();
+		return;
+	}
+	cout << "Thread " << threadNumber << " locks mutex and retreives data " << myBucket[myBucket.size() - 1] << endl;
 	myBucket.pop_back();
 	myMutex.unlock();
-}
-// This Function fills in the bucket with 15 items of data
-void ProduceFunction(){
-
-	if (myBucket.size() != 0)return;					
-	int pData = 0;
-	for (int i = 0; i < 15; i++)
-		myBucket.push_back(pData++);
 }
 
 int main(){
 
 	thread threadPool[6];
-	
+
 	do { // will execute until bucket is emptied, used a do while for inital fill of bucket
 		// producer thread
 		threadPool[0] = thread(ProduceFunction);
