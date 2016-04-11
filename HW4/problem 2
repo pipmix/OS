@@ -37,15 +37,17 @@ Process 2 {
 	// removes block from list1 and freelist
 	// use block x to put into y
 	// inssert block into freelist and list2
-
+	p(block);
 	var x = *block;
 	var y = *block;
-
+	v(block);
+	
 	while (1) {
 		p(block);
 		p(list1);
 		x = unlink(list1); 						// x = block removed from list1
 		v(list1);
+		pfreelist);
 		y = unlink(freelist); 					// y = block removed from freelist
 		use_block_x_to_produce_info_in_y(x, y);
 		link(x, freelist); 						// insert block x into freelist
@@ -64,7 +66,9 @@ Process 3{
 
 	p(block);
 	var c = *block;
+	v(block);
 	while (1) {
+		p(block);
 		p(list2);
 		c = unlink(list2); 				// y = block removed from list2
 		v(list2);
