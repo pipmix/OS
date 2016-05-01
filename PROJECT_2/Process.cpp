@@ -32,7 +32,7 @@ Process::Process() {
 
 	g_MemoryFootprint += m_MemoryFootprint;
 
-	cout << "CREATED:  ";
+	cout << "Init: ";
 	this->Print();
 
 
@@ -68,8 +68,18 @@ void Process::InsertId(int x) {
 
 void Process::Print() {
 	// This function is for IO and prints the tuples inside the class
-	cout << "PID:" << std::setw(8) << m_ProcessID
+	cout << "PID:" << std::setw(5) << m_ProcessID
 		<< "\tCYCLES:" << std::setw(8) << m_NumberOfCycles
 		<< "\tMEM:" << std::setw(6) << m_MemoryFootprint << " kb     "
-		<< "START:" << std::setw(8) << m_StartTime ;
+		<< "START:" << std::setw(6) << m_StartTime ;
+}
+
+
+bool Process::Update() {
+	
+	
+	
+	if ((m_StartTime + m_NumberOfCycles) == g_SimulatedCycles)return 1;
+
+	return 0;
 }

@@ -13,6 +13,7 @@ extern int g_MemoryFootprint;
 extern int g_SimulatedCycles;
 extern int g_MemCount;
 extern int g_ProcessID;
+extern int g_StartTime;
 
 
 using namespace std;
@@ -53,6 +54,8 @@ public:
 
 	int m_arrivalTime;
 
+	bool Update();
+
 
 	Process* prev;
 	Process* next;
@@ -60,6 +63,9 @@ public:
 	bool InUse;
 
 	MemBlock memory;
+
+
+	bool Running;
 };
 
 #endif // PROCESS_H

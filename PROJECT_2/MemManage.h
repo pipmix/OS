@@ -17,7 +17,8 @@ public:
 
 
 	bool MyMalloc(Process* p);
-	void MyFree(Process* p);
+	bool MyFree(Process* p);
+	int Update();
 
 	~MemManage();
 
@@ -29,6 +30,8 @@ private:
 
 	int m_Size;
 	vector<MemBlock*> m_Blocks;
+
+
 
 
 	char* m_MemoryBlock;

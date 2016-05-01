@@ -60,7 +60,7 @@ bool MemManage::MyMalloc(Process* p) {
 	p->memory.start = (p->memory.prev->start + p->memory.prev->size) + 1;
 	p->memory.size = p->m_MemoryFootprint;
 
-	cout << "\tALLOCATED " << p->m_MemoryFootprint << " kb at  " << p->memory.start << " / 20000 kb" << endl;
+	cout << "  ALLOCATED " << std::setw(5) << p->m_MemoryFootprint << " kb at  " << std::setw(6) << p->memory.start << " kb / 20000 kb" << endl;
 
 	return 1;
 
@@ -68,13 +68,25 @@ bool MemManage::MyMalloc(Process* p) {
 }
 
 
-void MemManage::MyFree(Process* p) {
+bool MemManage::MyFree(Process* p) {
+
+	p->InUse = 0;
 
 
-	cout << "\tDe-allocated " << p->m_MemoryFootprint << " kb at memory location " << p->memory.start << "of 20,000 kb." << endl;
+	cout << "\tDe-allocated " << std::setw(5) << p->m_MemoryFootprint << " kb at " << std::setw(6) << p->memory.start << " kb / 20000 kb at cycle " << g_SimulatedCycles << endl;
 
+	return 1;
 
 
 }
 
+int MemManage::Update() {
 
+	int FinishedProcesses = 0;
+
+	for (auto* i : proccesses) 
+		if  (i->Update() )FinishedProcesses += MyFree(i);					// Free the memory when process completes
+	
+	return FinishedProcesses;
+
+}
