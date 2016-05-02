@@ -3,56 +3,38 @@
 
 #include <iostream>
 #include <iomanip>  
-#include <random>
-#include <chrono>
+
 #include <malloc.h>
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctime>
+#include "SharedData.h"
 
 
-extern int g_MemoryFootprint;
+
 extern int g_SimulatedCycles;
-extern int g_MemCount;
-extern int g_ProcessID;
-extern int g_StartTime;
-
+extern GlobalData* g_Data;
 
 using namespace std;
 
-
-struct MemBlock {
-
-	int start, size;
-	MemBlock* prev;
-	MemBlock* next;
-
-	MemBlock() {
-		next = nullptr;
-		prev = nullptr;
-	}
-
-
-};
 
 
 class Process {
 
 public:
 
-	Process();
-	~Process();
-	double      ReturnNormalDist(double x, double y);
-	void        Print();
-	void		InsertId(int x);
+			Process(int i);
+			~Process();
 
+	void	Print();
 
 
 	int     m_ProcessID;
 	int     m_NumberOfCycles;
 	int     m_MemoryFootprint;
-
 	int		m_StartTime;
-
-	int m_arrivalTime;
+	int		m_arrivalTime;
 
 	bool Update();
 

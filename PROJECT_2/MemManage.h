@@ -1,5 +1,9 @@
-#pragma once
-#include "Process.h"
+#ifndef MEMMANAGE_H
+#define MEMMANAGE_H
+
+
+
+#include "ProcessInfo.h"
 
 
 
@@ -20,11 +24,13 @@ public:
 	bool MyFree(Process* p);
 	int Update();
 
+	void GetDataSet(vector<ProcessInfo> p);
+
 	~MemManage();
 
 
 	vector<Process*> proccesses;
-
+	vector<ProcessInfo> processInfo;
 
 private:
 
@@ -41,3 +47,4 @@ private:
 	MemBlock* currentMemory;
 };
 
+#endif
