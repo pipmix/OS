@@ -20,7 +20,6 @@ struct ProcessData
 
 };
 
-
 class ProcessInfo
 {
 public:

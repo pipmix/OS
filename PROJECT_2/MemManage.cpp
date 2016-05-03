@@ -18,7 +18,7 @@ MemManage::~MemManage(){
 bool MemManage::AddProcess(Process* p) {
 
 	proccesses.push_back(p);
-	MyMalloc(p);
+	//MyMalloc(p);
 
 
 	return 1;
@@ -31,15 +31,16 @@ bool MemManage::MyMalloc(Process* p) {
 	int requestBlock = p->m_MemoryFootprint;
 
 	if (pRoot == nullptr) {
-		cout << "Allocating root" << endl;
+		if (g_Debug)cout << "Allocating root" << endl;
 		pRoot = p;
 		pCurrent = p;
 		p->memory.size = requestBlock;
 		p->memory.start = 0;
 		p->memory.end = p->memory.start + p->memory.size;
-		p->Allocated();
+		// Assign block of memory to process
+		p->Allocate(m_MemoryBlock);
 		p->nxt = nullptr;
-		cout << "Allocated " << p->m_ProcessID << " block: " << p->memory.start << " to " << p->memory.start + p->memory.size << endl;
+		if (g_Debug)cout << "Allocated " << p->m_ProcessID << " block: " << p->memory.start << " to " << p->memory.start + p->memory.size << endl;
 		return 1;
 	}
 	else {
@@ -53,12 +54,13 @@ bool MemManage::MyMalloc(Process* p) {
 				p->memory.size = requestBlock;
 				p->memory.start = endOfCurrentBlock;
 				p->memory.end = p->memory.start + p->memory.size;
-				p->Allocated();
+				// Assign block of memory to process
+				p->Allocate(m_MemoryBlock);
 				pCurrent->nxt = p;
 				pCurrent = p;
 				pCurrent->nxt = nullptr;
 
-				cout << "\tAllocated " << std::setw(4) << p->memory.size << " kb at block [ " << std::setw(6) << p->memory.start << " - " << std::setw(6) << p->memory.end << " ] at cycle " << g_SimulatedCycles << " for PID: " << p->m_ProcessID << endl;
+				if (g_Debug)cout << "\tAllocated " << std::setw(4) << p->memory.size << " kb at block [ " << std::setw(6) << p->memory.start << " - " << std::setw(6) << p->memory.end << " ] at cycle " << g_SimulatedCycles << " for PID: " << p->m_ProcessID << endl;
 
 				return 1;
 			}
@@ -70,11 +72,12 @@ bool MemManage::MyMalloc(Process* p) {
 					p->memory.size = requestBlock;
 					p->memory.start = endOfCurrentBlock;
 					p->memory.end = p->memory.start + p->memory.size;
-					p->Allocated();
+					// Assign block of memory to process
+					p->Allocate(m_MemoryBlock);
 					p->nxt = pCurrent->nxt;
 					pCurrent->nxt = p;
 					pCurrent = p;
-					cout << "\tAllocated " << std::setw(4) << p->memory.size << " kb at block [ " << std::setw(6) << p->memory.start << " - " << std::setw(6) << p->memory.end << " ] at cycle " << g_SimulatedCycles << " for PID: " << p->m_ProcessID << endl;
+					if (g_Debug)cout << "\tAllocated " << std::setw(4) << p->memory.size << " kb at block [ " << std::setw(6) << p->memory.start << " - " << std::setw(6) << p->memory.end << " ] at cycle " << g_SimulatedCycles << " for PID: " << p->m_ProcessID << endl;
 
 					return 1;
 				}
@@ -86,7 +89,6 @@ bool MemManage::MyMalloc(Process* p) {
 					}
 				}
 			}
-
 		}
 	}
 
@@ -96,7 +98,6 @@ bool MemManage::MyMalloc(Process* p) {
 	int memNeeded2 = endOfCurrentBlock2 + requestBlock2;
 	//cout << "last request at " << memNeeded2 << "kb at " << pCurrent->memory.end + 1 << endl;
 	return 0;
-
 }
 
 
@@ -104,23 +105,24 @@ bool MemManage::MyFree(Process* p) {
 
 	if (p == pRoot){
 		if (p->nxt == nullptr) {
-			cout << "All memory is free" << endl;
+			if (g_Debug)cout << "All memory is free" << endl;
 			pRoot = nullptr;
 			
 			p->Deallocate();
-			cout << "\tDe-allocated " << std::setw(4) << p->memory.size << " kb at block [ " << std::setw(6) << p->memory.start << " - " << std::setw(6) << p->memory.end << " ] at cycle " << g_SimulatedCycles << " for PID: " << p->m_ProcessID << endl;
+			if (g_Debug)cout << "\tDe-allocated " << std::setw(4) << p->memory.size << " kb at block [ " << std::setw(6) << p->memory.start << " - " << std::setw(6) << p->memory.end << " ] at cycle " << g_SimulatedCycles << " for PID: " << p->m_ProcessID << endl;
 
 		}
 		else {
-			cout << "Deleting root" << endl;
+			if (g_Debug)cout << "Deleting root (compacting next block to location 0 kb)" << endl;
 			pRoot = p->nxt;
 			//p->nxt = nullptr;
 			// if first memory block deleted, move memory forward
 			pRoot->memory.start = 0;
 			pRoot->memory.end = pRoot->m_MemoryFootprint;
+			// null the pointer to char * memoryBlock
 			p->Deallocate();
-			cout << "\tDe-allocated " << std::setw(4) << p->memory.size << " kb at block [ " << std::setw(6) << p->memory.start << " - " << std::setw(6) << p->memory.end << " ] at cycle " << g_SimulatedCycles << " for PID: " << p->m_ProcessID << endl;
-			cout << "Deleting root 2" << endl;
+			if (g_Debug)cout << "\tDe-allocated " << std::setw(4) << p->memory.size << " kb at block [ " << std::setw(6) << p->memory.start << " - " << std::setw(6) << p->memory.end << " ] at cycle " << g_SimulatedCycles << " for PID: " << p->m_ProcessID << endl;
+
 		}
 	}
 	else {
@@ -130,8 +132,9 @@ bool MemManage::MyFree(Process* p) {
 			if (tempP->nxt->m_ProcessID == p->m_ProcessID) {
 				tempP->nxt = p->nxt;
 				p->nxt = nullptr;
+				// null the pointer to char * memoryBlock
 				p->Deallocate();
-				cout << "\tDe-allocated " << std::setw(4) << p->memory.size << " kb at block [ " << std::setw(6) << p->memory.start << " - " << std::setw(6) << p->memory.end << " ] at cycle " << g_SimulatedCycles << " for PID: " << p->m_ProcessID << endl;
+				if (g_Debug)cout << "\tDe-allocated " << std::setw(4) << p->memory.size << " kb at block [ " << std::setw(6) << p->memory.start << " - " << std::setw(6) << p->memory.end << " ] at cycle " << g_SimulatedCycles << " for PID: " << p->m_ProcessID << endl;
 
 				break;
 			}
@@ -151,24 +154,28 @@ int MemManage::Update() {
 
 	for (int i = 0; i < proccesses.size(); i++) {
 
+		// If past start time, insert into ready queue
 		if (proccesses[i]->m_StartTime <= g_SimulatedCycles)proccesses[i]->m_ready = true;
+		// If in ready queue but not allocated
 		if ((proccesses[i]->m_Allocated == false) && (proccesses[i]->m_ready))MyMalloc(proccesses[i]);
-		if (proccesses[i]->m_Allocated == true)			
+		// If allocated 
+		if (proccesses[i]->m_Allocated == true)		
+			// If process completed
 			if ((proccesses[i]->m_StartTime + proccesses[i]->m_NumberOfCycles) <= g_SimulatedCycles) {
-				cout << "PID: " << proccesses[i]->m_ProcessID << " finished processing " << proccesses[i]->m_NumberOfCycles << " cycles at " << g_SimulatedCycles << " needs de-allocating" << endl;
+				if (g_Debug)cout << "PID: " << proccesses[i]->m_ProcessID << " finished processing " << proccesses[i]->m_NumberOfCycles << " cycles at " << g_SimulatedCycles << " needs de-allocating" << endl;
+				// De-Allocate then delete process
 				MyFree(proccesses[i]);
 				proccesses.erase(proccesses.begin() + i);
 				i--;
 			}
-
 	}
 
 	counter++;
 	
-	// Compact the memory every 2000 cycles otherwise #3a and 3b will often get stuck because of memory segmentation
-	if (counter == 2000) {
-		PrintMemoryMap();
-		cout << "Current Processes running = " << proccesses.size() << endl;
+	// Compact the memory every 5000 cycles otherwise #3a and 3b will often get stuck because of memory segmentation
+	if (counter == 5000) {
+		if (g_Debug)PrintMemoryMap();
+		if (g_Debug)cout << "Current Processes running = " << proccesses.size() << endl;
 		counter = 0;
 		CompactMemory();
 	}
@@ -181,7 +188,6 @@ void MemManage::PrintMemoryMap() {
 
 	// This function will print the blocks of memory that is allocated
 	Process* temp = pRoot;
-
 	if (pRoot == nullptr)cout << " ROOT IS NULL" << endl;
 	cout << "-------------------------------------------------------------" << endl;
 	cout << "CURRENT MEMORY MAP at " << g_SimulatedCycles << " cycles " << " total size is " << g_MemCount << endl;
@@ -194,14 +200,13 @@ void MemManage::PrintMemoryMap() {
 
 }
 
-void	MemManage::CompactMemory() {
+void MemManage::CompactMemory() {
 
-	
-	
+	// This function moves all the memory blocks to the edge of the previous one
 	Process* tempP = pRoot;
 
-	if (tempP == nullptr)cout << "All memory free, cannot compact" << endl;
-	else cout << "-------------------------------COMPACTING MEMORY--------------------------------------------------------" << endl;
+	if (g_Debug)if (tempP == nullptr)cout << "All memory free, cannot compact" << endl;
+				else cout << "-------------------------------COMPACTING MEMORY--------------------------------------------------------" << endl;
 
 	while (tempP != nullptr) {
 		if (tempP->nxt == nullptr)break;
@@ -209,5 +214,4 @@ void	MemManage::CompactMemory() {
 		tempP->nxt->memory.end = tempP->nxt->memory.start + tempP->nxt->memory.size;
 		tempP = tempP->nxt;
 	}
-	
 }

@@ -14,11 +14,10 @@ Process::Process(int i) {
 	memory.size = m_MemoryFootprint;
 
 
-	cout << "Init: ";
+	if (g_Debug)cout << "Init: ";
 	if (g_Debug)this->Print();
 
 }
-
 
 void Process::Print() {
 	// This function is for IO and prints the tuples inside the class
@@ -31,7 +30,7 @@ void Process::Print() {
 
 int Process::Update() {
 
-
+	/*
 	if (m_StartTime == g_SimulatedCycles)m_ready = true;						// Goes into ready queue to have its memory allocated 
 
 	if (m_ready) {																// If in ready queue
@@ -49,22 +48,32 @@ int Process::Update() {
 			return 2; 
 		}
 	}
-
-
-
-
-	
+	*/
 	return 0;
 }
 
-void Process::Allocated() { 
-	// this function sets the start time once a process is allocated memory
-	m_Allocated = true;
+void Process::Allocate(char * m) { 
+	// Point memoryblock to the pre-Malloc'd block
+	memory.MemoryPtr = m;
+	// update the start time once process actually has allocated memory
 	m_StartTime = g_SimulatedCycles;
+	m_Allocated = true;
 }
 
 void Process::Deallocate(){
-
-	memory.Malloced = false;
+	// Set memory pointer to null before deleting process
+	memory.MemoryPtr = nullptr;
 	m_Complete = true;
+}
+
+void Process::WriteToBlock() {
+
+	//arr[i] == *(arr + i);
+
+	//char* newLoc = memory.MemoryPtr + memory.start;
+
+	//memccpy( *(memory.MemoryPtr + memory.start)  , memory.MemoryPtr, sizeof(char) * memory.size  );
+
+
+
 }

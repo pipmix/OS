@@ -34,6 +34,7 @@ int main() {
 
 		int processMemory = 0;
 		int selection = 0;
+		int selection2 = 0;
 		cout << "Which Problem would you like to run: \n"
 			<< "1. Problem 1: 20 mb, malloc, free\n"
 			<< "2. Problem 2: 20 mb, custom allocators\n"
@@ -45,6 +46,15 @@ int main() {
 			<< "Please enter 1-7: ";
 
 		cin >> selection;
+
+		cout << "\nWould you like to display the debug text? \n"
+			<< "1. Show Debug text (recommened to see everything that is happinging)\n"
+			<< "2. Hide debug text (used to get the proper measurments as cout waits at intervals)\n"
+			<< "Please enter 1 or 2: ";
+
+		cin >> selection2;
+
+		if (selection2 == 2)g_Debug = false;
 
 		if (selection == 1) {
 
@@ -89,7 +99,8 @@ void RunMemManager(int mem) {
 	}
 	g_FinishedProcess = 0;
 	auto finish = chrono::high_resolution_clock::now();
-
-	cout << "Completed running " << g_NoOfProc << " with total memory " << g_MemCount << endl;
+	cout << "--------------------------------------------------" << endl;
+	cout << "\nCompleted running " << g_NoOfProc << " processes, with total memory " << g_MemCount << endl;
 	cout << "Time to complete: " << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms\n\n";
+	cout << "--------------------------------------------------" << endl;
 }

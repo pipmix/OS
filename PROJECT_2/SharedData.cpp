@@ -1,7 +1,7 @@
 #include "SharedData.h"
 
 
-
+// Normal Distribution to get data range with a mean
 double ReturnNormalDist(double x, double y) {
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
@@ -9,7 +9,7 @@ double ReturnNormalDist(double x, double y) {
 	return distribution(generator);
 }
 
-
+// Generates range 1KB to 100KB with a mean of 20KB
 int GetMemoryData() {
 
 	double m_MemoryFootprint;
@@ -26,7 +26,7 @@ int GetMemoryData() {
 	return (int)m_MemoryFootprint;
 }
 
-
+// generates range 1,000 to 11,000 with a mean of 6,000
 int GetCycleData() {
 	double m_NumberOfCycles;
 	do {

@@ -30,8 +30,9 @@ public:
 			~Process();
 
 	void	Print();
-	void	Allocated();
+	void	Allocate(char * block);
 	void	Deallocate();
+	void	WriteToBlock();
 
 	int     m_ProcessID;
 	int     m_NumberOfCycles;

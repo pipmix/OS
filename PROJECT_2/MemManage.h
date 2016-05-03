@@ -23,8 +23,6 @@ public:
 	void	CompactMemory		();
 
 
-
-
 	vector<Process*> proccesses;
 
 
@@ -33,11 +31,9 @@ private:
 	int counter;
 	int m_Size;
 
+	// For #2, #3a, 3b - this whole block gets malloc'd once then subdiveded into blocks to be assigned to processes
 	char* m_MemoryBlock;
 
-	//MemBlock* root;
-	//MemBlock* tail;
-	//MemBlock* current;
 
 	Process* pRoot;
 	Process* pCurrent;
