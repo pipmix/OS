@@ -3,10 +3,13 @@
 // Externs //
 int g_SimulatedCycles = 0;
 int g_MemCount = 0;
-int g_ProcessID = 1000;
 int g_pid = 0;
 int g_arrive = 0;
 int g_NoOfProc = 64;
+int g_FinishedProcess = 0;
+bool g_Debug = true;
+
+
 GlobalData* g_Data;
 
 // Prototypes //
@@ -15,10 +18,12 @@ void RunMemManager(int mem);
 
 // Main //
 int main() {
-	cout << "--------------------------------------------------" << endl;
-	cout << "How many Processes? :    ";
-	cin >> g_NoOfProc;
+	
+	//cout << "--------------------------------------------------" << endl;
+	//cout << "How many Processes? :    ";
+	//cin >> g_NoOfProc;
 
+	g_NoOfProc = 64;
 
 	g_Data = new GlobalData [g_NoOfProc];
 	cout << "--------------------------------------------------" << endl;
@@ -40,8 +45,6 @@ int main() {
 			<< "Please enter 1-7: ";
 
 		cin >> selection;
-
-
 
 		if (selection == 1) {
 
@@ -76,14 +79,17 @@ void RunMemManager(int mem) {
 	MemManage memoryManager(mem);
 	int noCompletedProcess = 0, processCount = 0;
 	auto start = chrono::high_resolution_clock::now();
-	while (noCompletedProcess < g_NoOfProc) {
+	while (g_FinishedProcess < g_NoOfProc) {
 
 		if (processCount < g_NoOfProc)
 			if (g_SimulatedCycles % 50 == 0)
 				processCount += memoryManager.AddProcess(new Process(processCount));
-		noCompletedProcess += memoryManager.Update();
+		memoryManager.Update();
 		g_SimulatedCycles++;
 	}
+	g_FinishedProcess = 0;
 	auto finish = chrono::high_resolution_clock::now();
-	cout << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms\n";
+
+	cout << "Completed running " << g_NoOfProc << " with total memory " << g_MemCount << endl;
+	cout << "Time to complete: " << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms\n\n";
 }

@@ -1,13 +1,9 @@
 #ifndef MEMMANAGE_H
 #define MEMMANAGE_H
 
-
-
 #include "ProcessInfo.h"
 
-
-
-
+extern int g_FinishedProcess;
 
 
 class MemManage{
@@ -15,36 +11,36 @@ class MemManage{
 public:
 
 
-	MemManage(int s);
+			MemManage			(int s);
+			~MemManage			();
+	bool	AddProcess			(Process*);
+	bool	MyMalloc			(Process* p);
+	bool	MyFree				(Process* p);
+	int		Update				();
 
-	bool AddProcess(Process*);
+	void	PrintMemoryMap		();
+
+	void	CompactMemory		();
 
 
-	bool MyMalloc(Process* p);
-	bool MyFree(Process* p);
-	int Update();
-
-	void GetDataSet(vector<ProcessInfo> p);
-
-	~MemManage();
 
 
 	vector<Process*> proccesses;
-	vector<ProcessInfo> processInfo;
+
 
 private:
 
+	int counter;
 	int m_Size;
-	vector<MemBlock*> m_Blocks;
-
-
-
 
 	char* m_MemoryBlock;
 
+	//MemBlock* root;
+	//MemBlock* tail;
+	//MemBlock* current;
 
-	MemBlock root;
-	MemBlock* currentMemory;
+	Process* pRoot;
+	Process* pCurrent;
 };
 
 #endif

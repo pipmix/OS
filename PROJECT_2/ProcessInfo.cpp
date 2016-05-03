@@ -14,10 +14,10 @@ void ProcessInfo::CreateProcesses(int totalnumofprocesses)
 		PData.numofCyc = g_Data[i].cycles;
 		PData.startTime = g_Data[i].arrival;
 		ProcessList.push_back(PData);
-		cout << "PID:" << std::setw(5) << PData.Pid
-			<< "\tcycles:" << std::setw(8) << PData.numofCyc
-			<< "\t  memory:" << std::setw(6) << PData.Mem << " kb     "
-			<< "start:" << std::setw(6) << PData.startTime << endl;
+		if (g_Debug) cout << "PID:" << std::setw(5) << PData.Pid
+					<< "\tcycles:" << std::setw(8) << PData.numofCyc
+					<< "\t  memory:" << std::setw(6) << PData.Mem << " kb     "
+					<< "start:" << std::setw(6) << PData.startTime << endl;
 	}
 
 

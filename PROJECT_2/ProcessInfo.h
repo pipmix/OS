@@ -4,7 +4,7 @@
 
 
 extern int g_SimulatedCycles;
-
+extern bool g_Debug;
 
 
 extern GlobalData* g_Data;

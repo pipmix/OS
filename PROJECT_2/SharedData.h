@@ -3,12 +3,15 @@
 
 #include <random>
 #include <chrono>
+#include <iomanip>
+#include <iostream>
 using namespace std;
+
+
+extern int g_MemCount;
 
 extern int g_pid;
 extern int g_arrive;
-extern int g_MemCount;
-
 
 double ReturnNormalDist(double x, double y);
 int GetMemoryData();
@@ -28,6 +31,7 @@ struct GlobalData {		// Global Data Set to ensure group members accessed the sam
 		g_arrive += 50;
 		g_MemCount += memory;
 	}
+
 	void Print() {
 		cout << "PID:" << std::setw(5) << PID
 			<< "\tCYCLES:" << std::setw(8) << cycles
@@ -39,17 +43,11 @@ struct GlobalData {		// Global Data Set to ensure group members accessed the sam
 
 struct MemBlock {
 
-	int start, size;
+	int start;
+	int end;
+	int size;
 	bool Malloced;
 	void* MemoryPtr;
-
-	MemBlock* prev;
-	MemBlock* next;
-
-	MemBlock() {
-		next = nullptr;
-		prev = nullptr;
-	}
 
 
 };

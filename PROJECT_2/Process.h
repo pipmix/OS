@@ -15,6 +15,8 @@
 
 extern int g_SimulatedCycles;
 extern GlobalData* g_Data;
+extern bool g_Debug;
+
 
 using namespace std;
 
@@ -28,23 +30,30 @@ public:
 			~Process();
 
 	void	Print();
-
+	void	Allocated();
+	void	Deallocate();
 
 	int     m_ProcessID;
 	int     m_NumberOfCycles;
 	int     m_MemoryFootprint;
 	int		m_StartTime;
-	int		m_arrivalTime;
-
-	bool Update();
 
 
-	Process* prev;
-	Process* next;
+	int Update();
+
+
+	Process* prv;
+	Process* nxt;
 	int memStart;
 	bool InUse;
 
+	bool m_Allocated;
+	bool m_Complete;
+	bool m_ready;
+
 	MemBlock memory;
+
+
 
 
 	bool Running;
