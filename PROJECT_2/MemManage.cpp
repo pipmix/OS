@@ -18,7 +18,7 @@ MemManage::~MemManage(){
 bool MemManage::AddProcess(Process* p) {
 
 	proccesses.push_back(p);
-	MyMalloc(p);
+	//MyMalloc(p);
 
 
 	return 1;
