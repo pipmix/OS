@@ -68,9 +68,7 @@ void Process::Deallocate(){
 
 void Process::WriteToBlock() {
 
-	//arr[i] == *(arr + i);
-
-	//char* newLoc = memory.MemoryPtr + memory.start;
+	// This code was to allocate actual memory to the memory blocks however dillion said this was unnesccary
 
 	//memccpy( *(memory.MemoryPtr + memory.start)  , memory.MemoryPtr, sizeof(char) * memory.size  );
 

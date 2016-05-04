@@ -71,7 +71,8 @@ int main() {
 
 			cout << "--------------------------------------------------" << endl;
 			cout << "\nCompleted running " << g_NoOfProc << " processes, with total memory " << g_MemCount << endl;
-			cout << "Time to complete: " << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms\n\n";
+			cout << "Time to complete: " << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms";
+			cout << "    microseconds " << chrono::duration_cast<chrono::nanoseconds>(finish - start).count() << "\n\n";
 			cout << "--------------------------------------------------" << endl;
 
 
@@ -97,8 +98,8 @@ int main() {
 			auto finish = chrono::high_resolution_clock::now();
 			cout << "\nProblem 1:" << endl;
 			cout << "\nCompleted running " << g_NoOfProc << " processes, with total memory " << g_MemCount << endl;
-			cout << "Time to complete: " << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms\n\n";
-
+			cout << "Time to complete: " << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms";
+			cout << "    microseconds " << chrono::duration_cast<chrono::nanoseconds>(finish - start).count() << "\n\n";
 			cout << "Problem 2:" << endl;
 			RunMemManager(20000);
 			cout << "Problem 3:" << endl;
@@ -129,7 +130,7 @@ void RunMemManager(int mem) {
 	g_FinishedProcess = 0;
 	auto finish = chrono::high_resolution_clock::now();
 	cout << "--------------------------------------------------" << endl;
-	cout << "\nCompleted running " << g_NoOfProc << " processes, with total memory " << g_MemCount << endl;
-	cout << "Time to complete: " << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms\n\n";
+	cout << "Time to complete: " << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms";
+	cout << "    microseconds " << chrono::duration_cast<chrono::nanoseconds>(finish - start).count() << "\n\n";
 	cout << "--------------------------------------------------" << endl;
 }

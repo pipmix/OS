@@ -177,7 +177,7 @@ int MemManage::Update() {
 		if (g_Debug)PrintMemoryMap();
 		if (g_Debug)cout << "Current Processes running = " << proccesses.size() << endl;
 		counter = 0;
-		CompactMemory();
+		//CompactMemory();
 	}
 
 	return 1;
