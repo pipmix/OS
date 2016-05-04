@@ -8,6 +8,7 @@ extern bool g_Debug;
 
 
 extern GlobalData* g_Data;
+extern bool g_Debug;
 
 struct ProcessData
 {

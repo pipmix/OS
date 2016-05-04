@@ -65,7 +65,7 @@ void ProcessInfo::Problem1()
 
 		if (cyclesElapsed % 50 == 0 && counter < ProcessList.size())
 		{
-			cout << "Allocating Memory for Process " << ProcessList[counter].Pid << endl;
+			if (g_Debug) cout << "Allocating Memory for Process " << ProcessList[counter].Pid << endl;
 			Info = ProcessList[counter];
 			Info.MemoryPtr = malloc(Info.Mem);
 			Info.Malloced = 1;
@@ -80,7 +80,7 @@ void ProcessInfo::Problem1()
 			{
 				if (ProcessestoFree[i].Malloced == 1 && ProcessestoFree[i].numofCyc == 0)
 				{
-					cout << "Freeing Memory for Process " << ProcessestoFree[i].Pid << endl;
+					if (g_Debug) cout << "Freeing Memory for Process " << ProcessestoFree[i].Pid << endl;
 
 					free(ProcessestoFree[i].MemoryPtr);
 					ProcessestoFree[i].Malloced = 0;

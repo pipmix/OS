@@ -43,7 +43,8 @@ int main() {
 			<< "5. Custom Memory Amount\n"
 			<< "6. View the global processes set\n"
 			<< "7. Exit program\n"
-			<< "Please enter 1-7: ";
+			<< "8. Run all four one after another \n"
+			<< "Please enter 1-8: ";
 
 		cin >> selection;
 
@@ -65,7 +66,14 @@ int main() {
 			process.Problem1();
 
 			auto finish = chrono::high_resolution_clock::now();
-			cout << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms\n";
+
+
+
+			cout << "--------------------------------------------------" << endl;
+			cout << "\nCompleted running " << g_NoOfProc << " processes, with total memory " << g_MemCount << endl;
+			cout << "Time to complete: " << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms\n\n";
+			cout << "--------------------------------------------------" << endl;
+
 
 		}
 		else if (selection == 2) RunMemManager(20000);
@@ -78,6 +86,27 @@ int main() {
 		}
 		else if (selection == 6) for (auto i = 0; i < g_NoOfProc; i++)g_Data[i].Print();
 		else if (selection == 7) break;
+		else if (selection == 8) {
+
+			ProcessInfo process;
+			process.CreateProcesses(64);
+			auto start = chrono::high_resolution_clock::now();
+
+			process.Problem1();
+
+			auto finish = chrono::high_resolution_clock::now();
+			cout << "\nProblem 1:" << endl;
+			cout << "\nCompleted running " << g_NoOfProc << " processes, with total memory " << g_MemCount << endl;
+			cout << "Time to complete: " << chrono::duration_cast<chrono::milliseconds>(finish - start).count() << "ms\n\n";
+
+			cout << "Problem 2:" << endl;
+			RunMemManager(20000);
+			cout << "Problem 3:" << endl;
+			RunMemManager(g_MemCount / 2);
+			cout << "Problem 4:" << endl;
+			RunMemManager(g_MemCount / 10);
+
+		}
 
 	}
 
